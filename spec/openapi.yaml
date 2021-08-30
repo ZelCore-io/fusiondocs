@@ -372,6 +372,102 @@ paths:
                       receivedAmount: 88.9375
                       feesPaid: 11
                       possibleToClaim: 2.8125
+  /coinbase/records:
+    get:
+      tags:
+        - coinbase
+      summary: Statistics and coinbase records
+      description: >-
+        Statistics and recorded coinbase (mining) records for given address.
+      operationId: coinbaserecordsaddress
+      parameters:
+        - in: query
+          name: address
+          required: true
+          schema:
+            type: string
+          description: Flux main chain address
+          example: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/status'
+                  data:
+                    type: object
+                    description: Statistics and coinbase records
+                    properties:
+                      address:
+                        type: string
+                        description: >-
+                          Given main chain address
+                      satoshis:
+                        type: number
+                        description: >-
+                          Total received coinbase amount. Mined or node rewards coins on main chain in satoshis
+                      amount:
+                        type: number
+                        description: >-
+                           Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
+                      numberOfTxs:
+                        type: number
+                        description: >-
+                          Number of coinbase transactions - mined blocks and node rewards blocks.
+                      transactions:
+                        type: array
+                        description: >-
+                          Coinbase records
+                        items:
+                          type: object
+                          properties:
+                            txid: 
+                              type: string
+                              description: Transaction ID of coinbase record
+                            vout:
+                              type: number
+                              description: Vout index of coinbase record
+                            height:
+                              type: number
+                              description: Blockhegith of coinbase record
+                            address:
+                              type: string
+                              description: Address belonging to the coinbase record - given address
+                            satoshis:
+                              type: number
+                              description: Amount of Flux in the given coinbase record
+                            scriptPubKey:
+                              type: string
+                              description: Script Public Key of given coinbase record
+                            coinbase:
+                              type: boolean
+                              description: If given record is a coinbase or not. Shall be true.
+              example:
+                status: success
+                data: 
+                  address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                  satoshis: 1125000000
+                  amount: 11.25
+                  numberOfTxs: 2
+                  transactions:
+                    - txid: 1906965a4a47ece290bed0e54724b39d8d7322bae08fd75341b21decf59bbb84
+                      vout: 1
+                      height: 858244
+                      address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                      satoshis: 562500000
+                      scriptPubKey: 76a9146a2adcbb1a1ada8a48bb28eac2dba382424ec78688ac
+                      coinbase: true
+                    - txid: cfcf9b61a5a6e21ffeb7ddf367947e333a69214e8d807b311a07f6d7cd210d61
+                      vout: 1
+                      height: 858649
+                      address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                      satoshis: 562500000
+                      scriptPubKey: 76a9146a2adcbb1a1ada8a48bb28eac2dba382424ec78688ac
+                      coinbase: true
 components:
   schemas:
     signature:
