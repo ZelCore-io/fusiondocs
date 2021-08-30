@@ -721,16 +721,7 @@
                 }
               },
               "example": {
-                "addresses": [
-                  {
-                    "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
-                    "chain": "main"
-                  },
-                  {
-                    "address": "t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy",
-                    "chain": "main"
-                  }
-                ]
+                "address": null
               }
             }
           }
@@ -889,6 +880,80 @@
                       ]
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coinbase/claim": {
+      "post": {
+        "tags": [
+          "coinbase"
+        ],
+        "summary": "Claim coinbase rewards",
+        "description": "Claim coinbase (mining) rewards for a given address on a given chain",
+        "operationId": "coinbaseclaim",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chain": {
+                    "type": "string",
+                    "description": "Chain on which to claim rewards. Available options are eth, kda, bsc"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Main chain address for which to claim rewards"
+                  },
+                  "claimingAddress": {
+                    "type": "string",
+                    "description": "Address (account) on the claiming chain to which rewards will be sent."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Obtained message phrase that address was signing"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "description": "Signature of message signed my address."
+                  }
+                }
+              },
+              "example": {
+                "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                "chain": "bsc",
+                "claimingAddress": "0x316594e7f55865e27a3abc69cddf0b404b34f3b2",
+                "message": "1630141888587p0z5ck835iiovp60ij0xg30c0zak6avh2fsp1avytg8",
+                "signature": "INEBIbSd629/rXFy4zC5HQUeNb6eivrGB9XHMNusKoUmNfKioUrun7nwVKA0FcIk0/DK59RVTnXMdJL5amtIK4U="
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "string",
+                      "description": "Transaction ID of coinbase claim"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": "0xdc1ea3f3fb2c788ba88d0b90ff88e613c1ea1fdcd83af53debf41c9b6bb49b69"
                 }
               }
             }
