@@ -5,4 +5,4 @@ codeSamples: true
 swaggerUI: true
 travis: true
 repo: zelcore-io/fusiondocs
-oasVersion: 3.1.0
+oasVersion: 3.0.0
