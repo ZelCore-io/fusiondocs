@@ -4,7 +4,7 @@ info:
   title: Fusion
   contact:
     email: tadeas@runonflux.io
-    url: 'https://docs.fusion.runonflux.io'
+    url: "https://docs.fusion.runonflux.io"
   license:
     name: UNLICENSED
   description: >-
@@ -14,7 +14,7 @@ info:
     Currently supported chains are: Main chain, Ethereum (ETH) chain, Binance Smart Chain (BSC) chain and Kadena (KDA) chain where fusion operates on chain ID 0.
 externalDocs:
   description: Fusion
-  url: 'https://github.com/zelcore-io/fusion'
+  url: "https://github.com/zelcore-io/fusion"
 tags:
   - name: general
     description: >-
@@ -25,12 +25,12 @@ tags:
   - name: coinbase
     description: >-
       Calls for interacting with Flux coinbase and Fusion coinbase claiming (mining rewards)
-  - name: Swap
+  - name: swap
     description: >-
       Interaction with Swapping Flux between its chains using Fusion
 servers:
-  - url: 'https://fusion.runonflux.io'
-  - url: 'https://testfusion.runonflux.io'
+  - url: "https://fusion.runonflux.io"
+  - url: "https://testfusion.runonflux.io"
 paths:
   /fees:
     get:
@@ -43,7 +43,7 @@ paths:
         in the form of sending less Flux than is user allowance. Each section has its flat fee, additionally a percentage fee may be applied.
       operationId: fusionfees
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -51,7 +51,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    $ref: '#/components/schemas/status'
+                    $ref: "#/components/schemas/status"
                   data:
                     type: object
                     description: Fees information for Fusion services
@@ -173,7 +173,7 @@ paths:
         and can only be used once.
       operationId: messagephrase
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -181,10 +181,10 @@ paths:
                 type: object
                 properties:
                   status:
-                    $ref: '#/components/schemas/status'
+                    $ref: "#/components/schemas/status"
                   data:
                     type: string
-                    description: >- 
+                    description: >-
                       A message phrase that shall be signed by claiming address
               example:
                 status: success
@@ -200,7 +200,7 @@ paths:
         even if they have not launched yet.
       operationId: coinbasestats
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -208,7 +208,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    $ref: '#/components/schemas/status'
+                    $ref: "#/components/schemas/status"
                   data:
                     type: object
                     description: Coinbase general information statistics
@@ -251,7 +251,7 @@ paths:
                           that user indirectly paid for claiming by receiving little less. The fees go to Flux Foundation for Fusion operation.
               example:
                 status: success
-                data: 
+                data:
                   total: 491906
                   totalClaimed: 1338
                   totalSatoshis: 1837401366485023
@@ -266,7 +266,7 @@ paths:
         - coinbase
       summary: Summary of Flux address for coinbase
       description: >-
-        Displays summary of given Flux address of Fusion coinbase statistics. Node operators can claim without a need for whitelist, miners and pools have to be whitelisted first. 
+        Displays summary of given Flux address of Fusion coinbase statistics. Node operators can claim without a need for whitelist, miners and pools have to be whitelisted first.
       operationId: coinbasesummaryaddress
       parameters:
         - in: query
@@ -277,7 +277,7 @@ paths:
           description: Flux main chain address
           example: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -285,7 +285,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    $ref: '#/components/schemas/status'
+                    $ref: "#/components/schemas/status"
                   data:
                     type: object
                     description: Summary of coinbase for a given address
@@ -301,7 +301,7 @@ paths:
                       amount:
                         type: number
                         description: >-
-                           Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
+                          Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
                       numberOfTxs:
                         type: number
                         description: >-
@@ -331,7 +331,7 @@ paths:
                         items:
                           type: object
                           properties:
-                            chain: 
+                            chain:
                               type: string
                               description: Chain that object refers to
                             claimedAmount:
@@ -348,7 +348,7 @@ paths:
                               description: Amount of Flux that can be claimed on the chain now.
               example:
                 status: success
-                data: 
+                data:
                   address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
                   satoshis: 102750000000
                   amount: 1027.5
@@ -390,7 +390,7 @@ paths:
           description: Flux main chain address
           example: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -398,7 +398,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    $ref: '#/components/schemas/status'
+                    $ref: "#/components/schemas/status"
                   data:
                     type: object
                     description: Statistics and coinbase records
@@ -414,7 +414,7 @@ paths:
                       amount:
                         type: number
                         description: >-
-                           Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
+                          Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
                       numberOfTxs:
                         type: number
                         description: >-
@@ -426,7 +426,7 @@ paths:
                         items:
                           type: object
                           properties:
-                            txid: 
+                            txid:
                               type: string
                               description: Transaction ID of coinbase record
                             vout:
@@ -449,7 +449,7 @@ paths:
                               description: If given record is a coinbase or not. Shall be true.
               example:
                 status: success
-                data: 
+                data:
                   address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
                   satoshis: 1125000000
                   amount: 11.25
@@ -493,7 +493,7 @@ paths:
           description: Chain on which to search for claimed records
           example: kda
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -501,7 +501,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    $ref: '#/components/schemas/status'
+                    $ref: "#/components/schemas/status"
                   data:
                     type: object
                     description: Statistics and claimed coinbase records
@@ -521,7 +521,7 @@ paths:
                         items:
                           type: object
                           properties:
-                            address: 
+                            address:
                               type: string
                               description: Address belonging to the claimed coinbase record - given address
                             amount:
@@ -547,7 +547,7 @@ paths:
                               description: Fee that user has paid to fasciliate the claiming and transfer. This less coins were sent to claimedAddress.
               example:
                 status: success
-                data: 
+                data:
                   address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
                   numberOfTxs: 2
                   transactions:
@@ -562,11 +562,168 @@ paths:
                     - address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
                       amount: 99.9375
                       chain: bsc
-                      txid: '0xdc1ea3f3fb2c788ba88d0b90ff88e613c1ea1fdcd83af53debf41c9b6bb49b69'
-                      claimedAddress: '0x316594e7f55865e27a3abc69cddf0b404b34f3b2'
+                      txid: "0xdc1ea3f3fb2c788ba88d0b90ff88e613c1ea1fdcd83af53debf41c9b6bb49b69"
+                      claimedAddress: "0x316594e7f55865e27a3abc69cddf0b404b34f3b2"
                       message: 1630141888587p0z5ck835iiovp60ij0xg30c0zak6avh2fsp1avytg8
                       signature: INEBIbSd629/rXFy4zC5HQUeNb6eivrGB9XHMNusKoUmNfKioUrun7nwVKA0FcIk0/DK59RVTnXMdJL5amtIK4U=
                       fee: 11
+  /coinbase/available:
+    post:
+      tags:
+        - coinbase
+      summary: Checks available coinbase for addresses
+      description: Gets Fusion coinbase summary for up to 12 addresses
+      operationId: coinbaseavailable
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: object
+              properties:
+                addresses:
+                  type: array
+                  description: An array of adresses information
+                  items:
+                    type: object
+                    description: Object specifying address and chain - usually main
+                    properties:
+                      chain:
+                        type: string
+                        description: Chain on which to look for coinbase summary. Only 'main' is eligible.
+                      address:
+                        type: string
+                        description: Address for which to look for coinbase summary.
+            example:
+              addresses:
+                - address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                  chain: main
+                - address: t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy
+                  chain: main
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/status"
+                  data:
+                    type: array
+                    description: Summary of coinbase for a given array of addresses
+                    items:
+                      type: object
+                      description: Summary of coinbase for a given address
+                      properties:
+                        address:
+                          type: string
+                          description: >-
+                            Given main chain address
+                        satoshis:
+                          type: number
+                          description: >-
+                            Total received coinbase amount. Mined or node rewards coins on main chain in satoshis
+                        amount:
+                          type: number
+                          description: >-
+                            Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
+                        numberOfTxs:
+                          type: number
+                          description: >-
+                            Number of coinbase transactions - mined blocks and node rewards blocks.
+                        isMiner:
+                          type: boolean
+                          description: >-
+                            If an address is a miner or a flux node address. Mining addresses have to be whitelisted first
+                            before being able to claim rewards. Specially designed for pools that have to show proof of distributing
+                            the rewards to actual miners. Node operators can claim without a need for whitelist
+                        maxClaimablePerChain:
+                          type: number
+                          description: >-
+                            Amount of Flux that can be claimed on one particular chain of Flux.
+                        maxClaimableTotal:
+                          type: number
+                          description: >-
+                            Amount of Flux that can be claimed on all currently launched chains.
+                        claimedTotal:
+                          type: number
+                          description: >-
+                            Total claimed Flux on all chains
+                        chainStatistics:
+                          type: array
+                          description: >-
+                            Statistics of each chain for a given address
+                          items:
+                            type: object
+                            properties:
+                              chain:
+                                type: string
+                                description: Chain that object refers to
+                              claimedAmount:
+                                type: number
+                                description: Amount of Flux that was claimed on the chain
+                              receivedAmount:
+                                type: number
+                                description: Amount of Flux that was received on the chain
+                              feesPaid:
+                                type: number
+                                description: Fees that were paid for receiving Flux on the chain
+                              possibleToClaim:
+                                type: number
+                                description: Amount of Flux that can be claimed on the chain now.
+              example:
+                status: success
+                data:
+                  - address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                    satoshis: 102750000000
+                    amount: 1027.5
+                    numberOfTxs: 136
+                    isMiner: false
+                    maxClaimablePerChain: 102.75
+                    maxClaimableTotal: 308.25
+                    claimedTotal: 199.875
+                    chainStatistics:
+                      - chain: kda
+                        claimedAmount: 99.9375
+                        receivedAmount: 94.9375
+                        feesPaid: 5
+                        possibleToClaim: 2.8125
+                      - chain: eth
+                        claimedAmount: 0
+                        receivedAmount: 0
+                        feesPaid: 0
+                        possibleToClaim: 102.75
+                      - chain: bsc
+                        claimedAmount: 99.9375
+                        receivedAmount: 88.9375
+                        feesPaid: 11
+                        possibleToClaim: 2.8125
+                  - address: t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy
+                    satoshis: 124878326711914
+                    amount: 1248783.26711914
+                    numberOfTxs: 33933
+                    isMiner: true
+                    maxClaimablePerChain: 124878.32671191
+                    maxClaimableTotal: 374634.98013573
+                    claimedTotal: 0
+                    chainStatistics:
+                      - chain: kda
+                        claimedAmount: 0
+                        receivedAmount: 0
+                        feesPaid: 5
+                        possibleToClaim: 124878.32671191
+                      - chain: eth
+                        claimedAmount: 0
+                        receivedAmount: 0
+                        feesPaid: 0
+                        possibleToClaim: 124878.32671191
+                      - chain: bsc
+                        claimedAmount: 0
+                        receivedAmount: 0
+                        feesPaid: 0
+                        possibleToClaim: 124878.32671191
 components:
   schemas:
     signature:
