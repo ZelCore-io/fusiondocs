@@ -10,7 +10,7 @@
     "license": {
       "name": "UNLICENSED"
     },
-    "description": "This is an API documentation for Fusion mainly used in zelcore. Calls can additionally provide zelid header where zelid is zelcores ZelID or any bitcoin user address."
+    "description": "This is an API documentation for Fusion mainly used in zelcore. Calls can additionally provide zelid header where zelid is zelcores ZelID or any bitcoin user address. Currently supported chains are: Main chain, Ethereum (ETH) chain, Binance Smart Chain (BSC) chain and Kadena (KDA) chain where fusion operates on chain ID 0."
   },
   "externalDocs": {
     "description": "Fusion",
@@ -415,6 +415,266 @@
                         "receivedAmount": 88.9375,
                         "feesPaid": 11,
                         "possibleToClaim": 2.8125
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coinbase/records": {
+      "get": {
+        "tags": [
+          "coinbase"
+        ],
+        "summary": "Statistics and coinbase records",
+        "description": "Statistics and recorded coinbase (mining) records for given address",
+        "operationId": "coinbaserecordsaddress",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Flux main chain address",
+            "example": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Statistics and coinbase records",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Given main chain address"
+                        },
+                        "satoshis": {
+                          "type": "number",
+                          "description": "Total received coinbase amount. Mined or node rewards coins on main chain in satoshis"
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "Total received coinbase amount. Mined or node rewards coins on main chain in Flux units."
+                        },
+                        "numberOfTxs": {
+                          "type": "number",
+                          "description": "Number of coinbase transactions - mined blocks and node rewards blocks."
+                        },
+                        "transactions": {
+                          "type": "array",
+                          "description": "Coinbase records",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "txid": {
+                                "type": "string",
+                                "description": "Transaction ID of coinbase record"
+                              },
+                              "vout": {
+                                "type": "number",
+                                "description": "Vout index of coinbase record"
+                              },
+                              "height": {
+                                "type": "number",
+                                "description": "Blockhegith of coinbase record"
+                              },
+                              "address": {
+                                "type": "string",
+                                "description": "Address belonging to the coinbase record - given address"
+                              },
+                              "satoshis": {
+                                "type": "number",
+                                "description": "Amount of Flux in the given coinbase record"
+                              },
+                              "scriptPubKey": {
+                                "type": "string",
+                                "description": "Script Public Key of given coinbase record"
+                              },
+                              "coinbase": {
+                                "type": "boolean",
+                                "description": "If given record is a coinbase or not. Shall be true."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                    "satoshis": 1125000000,
+                    "amount": 11.25,
+                    "numberOfTxs": 2,
+                    "transactions": [
+                      {
+                        "txid": "1906965a4a47ece290bed0e54724b39d8d7322bae08fd75341b21decf59bbb84",
+                        "vout": 1,
+                        "height": 858244,
+                        "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                        "satoshis": 562500000,
+                        "scriptPubKey": "76a9146a2adcbb1a1ada8a48bb28eac2dba382424ec78688ac",
+                        "coinbase": true
+                      },
+                      {
+                        "txid": "cfcf9b61a5a6e21ffeb7ddf367947e333a69214e8d807b311a07f6d7cd210d61",
+                        "vout": 1,
+                        "height": 858649,
+                        "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                        "satoshis": 562500000,
+                        "scriptPubKey": "76a9146a2adcbb1a1ada8a48bb28eac2dba382424ec78688ac",
+                        "coinbase": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coinbase/claimed": {
+      "get": {
+        "tags": [
+          "coinbase"
+        ],
+        "summary": "Claimed records of coinbase",
+        "description": "Statistics and claimed records of coinbase (mining) for given address",
+        "operationId": "coinbaseclaimedaddresschain",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Flux main chain address",
+            "example": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU"
+          },
+          {
+            "in": "query",
+            "name": "chain",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Chain on which to search for claimed records",
+            "example": "kda"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Statistics and claimed coinbase records",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Given main chain address"
+                        },
+                        "numberOfTxs": {
+                          "type": "number",
+                          "description": "Number of coinbase claimed transactions"
+                        },
+                        "transactions": {
+                          "type": "array",
+                          "description": "Coinbase records",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "address": {
+                                "type": "string",
+                                "description": "Address belonging to the claimed coinbase record - given address"
+                              },
+                              "amount": {
+                                "type": "number",
+                                "description": "Amount of claimed coinbase coins"
+                              },
+                              "chain": {
+                                "type": "string",
+                                "description": "Chain on which the amount of coins was claimed"
+                              },
+                              "txid": {
+                                "type": "string",
+                                "description": "Transaction ID or Request Key that sent the funds from Fusion to user claimedAddress"
+                              },
+                              "claimedAddress": {
+                                "type": "string",
+                                "description": "Address to which coinbase funds were send to"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Message phrase that main chain address was signing to proove ownership of the address"
+                              },
+                              "signature": {
+                                "type": "string",
+                                "description": "Signature of given message phrase signed by a main chain address"
+                              },
+                              "fee": {
+                                "type": "number",
+                                "description": "Fee that user has paid to fasciliate the claiming and transfer. This less coins were sent to claimedAddress."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                    "numberOfTxs": 2,
+                    "transactions": [
+                      {
+                        "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                        "amount": 99.9375,
+                        "chain": "kda",
+                        "txid": "RWb1-xiMZbDPBYRkLkuWJA6TsfMothG9lCT0Ezra1Rs",
+                        "claimedAddress": "f506abce28bb0d7fc622302c6cb4ede27794b01522cb76c142dbc60e5fc135a7",
+                        "message": "1630141798555l513bv6poyrniq1nezo0kruuu7q86sfnq8e4khef9p4s",
+                        "signature": "H0GI9COOvVEYiKJjoFY4gSINH1/+p0K5Ma6qMCtCAE78Qp77CcmV5fPsAYSghN3aMCkepXUnmdiRacQq7TUFrNU=",
+                        "fee": 5
+                      },
+                      {
+                        "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                        "amount": 99.9375,
+                        "chain": "bsc",
+                        "txid": "0xdc1ea3f3fb2c788ba88d0b90ff88e613c1ea1fdcd83af53debf41c9b6bb49b69",
+                        "claimedAddress": "0x316594e7f55865e27a3abc69cddf0b404b34f3b2",
+                        "message": "1630141888587p0z5ck835iiovp60ij0xg30c0zak6avh2fsp1avytg8",
+                        "signature": "INEBIbSd629/rXFy4zC5HQUeNb6eivrGB9XHMNusKoUmNfKioUrun7nwVKA0FcIk0/DK59RVTnXMdJL5amtIK4U=",
+                        "fee": 11
                       }
                     ]
                   }
