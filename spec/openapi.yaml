@@ -1,0 +1,325 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Fusion
+  contact:
+    email: tadeas@zel.network
+    url: 'https://docs.fusion.runonflux.io'
+  license:
+    name: UNLICENSED
+  description: >-
+    This is an API documentation for Fusion mainly used in zelcore.
+    Calls can additionally provide zelid header where zelid is zelcores ZelID or any bitcoin
+    user address.
+externalDocs:
+  description: Fusion
+  url: 'https://github.com/zelcore-io/fusion'
+tags:
+  - name: general
+    description: >-
+      Calls that are used for overall information about Fusion
+  - name: snapshots
+    description: >-
+      Calls for interacting with Fusion snapshots and snapshot claming
+  - name: coinbase
+    description: >-
+      Calls for interacting with Flux coinbase and Fusion coinbase claiming (mining rewards)
+  - name: Swap
+    description: >-
+      Interaction with Swapping Flux between its chains using Fusion
+servers:
+  - url: 'https://fusion.runonflux.io'
+paths:
+  /fees:
+    get:
+      tags:
+        - general
+      summary: Fees tied with using Fusion services
+      description: >-
+        Apart from its main chain, Flux is present also as a token on multiple other chains. Doing on chain transactions comes
+        with a cost of using gas - native coin on those chains. Fusion is charging those fees from end user to remain sustainable
+        in the form of sending less Flux than is user allowance. Each section has its flat fee, additionally a percentage fee may be applied.
+      operationId: fusionfees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/status'
+                  data:
+                    type: object
+                    description: Fees information for Fusion services
+                    properties:
+                      snapshot:
+                        type: object
+                        description: Fees tied with claiming snapshot
+                        properties:
+                          percentage:
+                            type: number
+                            description: >-
+                              Percentage fee from amount. Percentage fee is in absolute value.
+                              To get the percentage fee substracted, multiply percentage with user amount
+                              and round up to higher value.
+                          kda:
+                            type: number
+                            description: >-
+                              Flat Flux-KDA fee for claiming snapshot on KDA chain.
+                              User will receive this amount of Flux-KDA less.
+                          eth:
+                            type: number
+                            description: >-
+                              Flat Flux-ETH fee for claiming snapshot on ETH chain.
+                              User will receive this amount of Flux-ETH less.
+                          bsc:
+                            type: number
+                            description: >-
+                              Flat Flux-BSC fee for claiming snapshot on BSC chain.
+                              User will receive this amount of Flux-BSC less.
+                      mining:
+                        type: object
+                        description: >-
+                          Percentage fee from amount. Percentage fee is in absolute value.
+                          To get the percentage fee substracted, multiply percentage with user amount
+                          and round up to higher value.
+                        properties:
+                          percentage:
+                            type: number
+                            description: >-
+                              Percentage fee from amount. Users claimable amount will
+                              firstly be substracted of this amount of percent. Rounded to
+                              higher amount.
+                          kda:
+                            type: number
+                            description: >-
+                              Flat Flux-KDA fee for claiming coinbase on KDA chain.
+                              User will receive this amount of Flux-KDA less.
+                          eth:
+                            type: number
+                            description: >-
+                              Flat Flux-ETH fee for claiming coinbase on ETH chain.
+                              User will receive this amount of Flux-ETH less.
+                          bsc:
+                            type: number
+                            description: >-
+                              Flat Flux-BSC fee for claiming coinbase on BSC chain.
+                              User will receive this amount of Flux-BSC less.
+                      swap:
+                        type: object
+                        description: >-
+                          Fees tied with swapping Flux between chains. Receiving (TO) asset is 
+                          substracted for the amount. In case of swap from BSC chain to ETH chain,
+                          use eth fee as Fusion is sending Flux-ETH and pays Ethereum network fee which is
+                          beared by end user by sending less Flux.
+                        properties:
+                          percentage:
+                            type: number
+                            description: >-
+                              Percentage fee from amount. Percentage fee is in absolute value.
+                              To get the percentage fee substracted, multiply percentage with user 
+                              sent amount and round up to higher value.
+                          kda:
+                            type: number
+                            description: >-
+                              Flat Flux-KDA fee for swapping to KDA chain.
+                              User will receive this amount of Flux-KDA less.
+                          eth:
+                            type: number
+                            description: >-
+                              Flat Flux-ETH fee for swapping to ETH chain.
+                              User will receive this amount of Flux-ETH less.
+                          bsc:
+                            type: number
+                            description: >-
+                              Flat Flux-BSC fee for swapping to BSC chain.
+                              User will receive this amount of Flux-BSC less.
+                          main:
+                            type: number
+                            description: >-
+                              Flat Flux fee for swapping to Main chain.
+                              User will receive this amount of Flux less.
+              example:
+                status: success
+                data:
+                  snapshot:
+                    percentage: 0
+                    kda: 5
+                    bsc: 11
+                    eth: 141
+                  mining:
+                    percentage: 0
+                    kda: 5
+                    bsc: 11
+                    eth: 141
+                  swap:
+                    percentage: 0.001
+                    main: 5
+                    kda: 5
+                    bsc: 11
+                    eth: 154
+  /messagephrase:
+    get:
+      tags:
+        - general
+      summary: Obtain message phrase for authentication purposes
+      description: >-
+        Message phrase is used for authentication purposes. This phrase is used for verifying
+        ownership of an address. Useful for coinbase and snapshot claiming. Phrase is valid for 15 minutes
+        and can only be used once.
+      operationId: messagephrase
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/status'
+                  data:
+                    type: string
+                    description: >- 
+                      A message phrase that shall be signed by claiming address
+              example:
+                status: success
+                data: 1630312899557vx5gmvwvc7d94fz12rhilfzvpgebicf6oatkf8c5paos
+  /coinbase/stats:
+    get:
+      tags:
+        - coinbase
+      summary: Statistics about coinbase and claiming process
+      description: >-
+        Coinbase claiming is possible since Flux fork on 27th March 2021. From blockheight 825001
+        all receivers of newly minted coins are eligible for additional 10% of mined coins on other parallel chains
+        even if they have not launched yet.
+      operationId: coinbasestats
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/status'
+                  data:
+                    type: object
+                    description: Coinbase general information statistics
+                    properties:
+                      total:
+                        type: number
+                        description: >-
+                          Total coinbase records present in database. A block usually has a reward for
+                          mining pool, cumulus, nimbus, stratus node rewards. Thus this number is at least 4 times
+                          higher than amount of blocks passed since fork.
+                      totalClaimed:
+                        type: number
+                        description: >-
+                          Amount of successful coinbase claiming records together on all chains
+                      totalSatoshis:
+                        type: number
+                        description: >-
+                          Amount of satoshis (basic unit of Flux. 1 FLUX = 1e8 satoshis) that was present in coinbase transactions
+                      totalFunds:
+                        type: number
+                        description: >-
+                          Amount of Flux that was present in coinbase transactions
+                      totalFundsClaimable:
+                        type: number
+                        description: >-
+                          Amount of Flux that is claimable on all chains. Flux has main chain and will have 10 parallel chains. 
+                          Each chain is eligible for 10% of coinbase reward, bringing this number to be equal to totalFuns.
+                      totalFundsClaimed:
+                        type: number
+                        description: >-
+                          Amount of Flux that was already claimed on parallel chains.
+                      totalFundsClaimablePerChain:
+                        type: number
+                        description: >-
+                          Amount of Flux that is claimable on one particular chain. Shall equal to 10% of totalFundsClaimable.
+                      totalFeesPaid:
+                        type: number
+                        description: >-
+                          Claiming coinbase is associated with fees to pay for gas on particular chains. totalFeesPaid is amount of Flux
+                          that user indirectly paid for claiming by receiving little less. The fees go to Flux Foundation for Fusion operation.
+              example:
+                status: success
+                data: 
+                  total: 491906
+                  totalClaimed: 1338
+                  totalSatoshis: 1837401366485023
+                  totalFunds: 18374013.66485023
+                  totalFundsClaimable: 18374013.66485023
+                  totalFundsClaimed: 308116.25659239
+                  totalFundsClaimablePerChain: 1837401.36648502
+                  totalFeesPaid: 16628
+components:
+  schemas:
+    signature:
+      description: Signature of signed messagePhrase.
+      type: string
+      example: >-
+        H+ZB3oSrsw6XkBxxlbwk33LEBJYvqtbMIm2kL9JzuoXMC6pSZd0lBHdnhJYzMTXv81zZQ7G/pkK1NvYN7cNF0GE=
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+          description: error
+        data:
+          type: object
+          properties:
+            code:
+              type: string
+              description: code of error
+            name:
+              type: string
+              description: name of error
+            message:
+              type: string
+              description: message of error
+    status:
+      type: string
+      description: Explanation of status
+      enum:
+        - success
+        - error
+    chain:
+      type: string
+      description: Chain of particular asset to further identify where an asset exists
+      enum:
+        - main
+        - eth
+        - bsc
+        - kda
+    exchangestatus:
+      type: string
+      description: >-
+        Status of an exchange.
+        New - for new exchange.
+        Waiting - awaiting deposit of funds. 
+        Confirming - picking confirmations on deposit of funds.
+        Exchanging - funds are being exchanged and buy coin is sending.
+        Finished - exchange is comepleted.
+        Expired - Funds were not received in time. 
+        Hold - ecxhange is holding the funds mostly due to KYC reasons.
+        Dust - received amount is below fusion fees. Swap is finished, 0 assets sent.
+      enum:
+        - new
+        - waiting
+        - confirming
+        - exchanging
+        - finished
+        - hold
+        - expired
+        - dust
+  headers:
+    zelid:
+      description: ZelID header
+      schema:
+        type: string

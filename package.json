@@ -1,0 +1,27 @@
+{
+  "name": "fusiondocs",
+  "version": "1.0.0",
+  "author": "Zelcore Technologies",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zelcore-io/fusiondocs.git"
+  },
+  "description": "ABE documentation",
+  "contributors": [
+    {
+      "name": "Tadeas Kmenta",
+      "email": "tadeas@zel.network"
+    }
+  ],
+  "scripts": {
+    "start": "swagger-repo serve",
+    "build": "swagger-repo build -o web_deploy",
+    "test": "swagger-repo validate",
+    "gh-pages": "swagger-repo gh-pages"
+  },
+  "dependencies": {
+    "swagger-repo": "^2.0.0-rc.15"
+  }
+}
