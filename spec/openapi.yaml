@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Fusion
   contact:
-    email: tadeas@zel.network
+    email: tadeas@runonflux.io
     url: 'https://docs.fusion.runonflux.io'
   license:
     name: UNLICENSED
@@ -29,6 +29,7 @@ tags:
       Interaction with Swapping Flux between its chains using Fusion
 servers:
   - url: 'https://fusion.runonflux.io'
+  - url: 'https://testfusion.runonflux.io'
 paths:
   /fees:
     get:
@@ -258,6 +259,119 @@ paths:
                   totalFundsClaimed: 308116.25659239
                   totalFundsClaimablePerChain: 1837401.36648502
                   totalFeesPaid: 16628
+  /coinbase/summary:
+    get:
+      tags:
+        - coinbase
+      summary: Summary of Flux address for coinbase
+      description: >-
+        Displays summary of given Flux address of Fusion coinbase statistics. Node operators can claim without a need for whitelist, miners and pools have to be whitelisted first. 
+      operationId: coinbasesummaryaddress
+      parameters:
+        - in: query
+          name: address
+          required: true
+          schema:
+            type: string
+          description: Flux main chain address
+          example: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/status'
+                  data:
+                    type: object
+                    description: Summary of coinbase for a given address
+                    properties:
+                      address:
+                        type: string
+                        description: >-
+                          Given main chain address
+                      satoshis:
+                        type: number
+                        description: >-
+                          Total received coinbase amount. Mined or node rewards coins on main chain in satoshis
+                      amount:
+                        type: number
+                        description: >-
+                           Total received coinbase amount. Mined or node rewards coins on main chain in Flux units.
+                      numberOfTxs:
+                        type: number
+                        description: >-
+                          Number of coinbase transactions - mined blocks and node rewards blocks.
+                      isMiner:
+                        type: boolean
+                        description: >-
+                          If an address is a miner or a flux node address. Mining addresses have to be whitelisted first
+                          before being able to claim rewards. Specially designed for pools that have to show proof of distributing
+                          the rewards to actual miners. Node operators can claim without a need for whitelist
+                      maxClaimablePerChain:
+                        type: number
+                        description: >-
+                          Amount of Flux that can be claimed on one particular chain of Flux.
+                      maxClaimableTotal:
+                        type: number
+                        description: >-
+                          Amount of Flux that can be claimed on all currently launched chains.
+                      claimedTotal:
+                        type: number
+                        description: >-
+                          Total claimed Flux on all chains
+                      chainStatistics:
+                        type: array
+                        description: >-
+                          Statistics of each chain for a given address
+                        items:
+                          type: object
+                          properties:
+                            chain: 
+                              type: string
+                              description: Chain that object refers to
+                            claimedAmount:
+                              type: number
+                              description: Amount of Flux that was claimed on the chain
+                            receivedAmount:
+                              type: number
+                              description: Amount of Flux that was received on the chain
+                            feesPaid:
+                              type: number
+                              description: Fees that were paid for receiving Flux on the chain
+                            possibleToClaim:
+                              type: number
+                              description: Amount of Flux that can be claimed on the chain now.
+              example:
+                status: success
+                data: 
+                  address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                  satoshis: 102750000000
+                  amount: 1027.5
+                  numberOfTxs: 136
+                  isMiner: false
+                  maxClaimablePerChain: 102.75
+                  maxClaimableTotal: 308.25
+                  claimedTotal: 199.875
+                  chainStatistics:
+                    - chain: kda
+                      claimedAmount: 99.9375
+                      receivedAmount: 94.9375
+                      feesPaid: 5
+                      possibleToClaim: 2.8125
+                    - chain: eth
+                      claimedAmount: 0
+                      receivedAmount: 0
+                      feesPaid: 0
+                      possibleToClaim: 102.75
+                    - chain: bsc
+                      claimedAmount: 99.9375
+                      receivedAmount: 88.9375
+                      feesPaid: 11
+                      possibleToClaim: 2.8125
 components:
   schemas:
     signature:
