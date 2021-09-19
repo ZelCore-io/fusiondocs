@@ -874,6 +874,97 @@ paths:
                       address: '0x134e4c74c670adefdcb2476df6960d9297bc7dad'
                     - chain: bsc
                       address: '0x9b192227da99b5a50d037b10c965609ed83c43d7'
+  /swap/detail:
+    get:
+      tags:
+        - swap
+      summary: Detail of a Swap
+      description: Displays details of supplied swap of Fusion
+      operationId: swapdetail
+      parameters:
+        - in: query
+          name: txid
+          required: true
+          schema:
+            type: string
+          description: TXID of depositing Fusion Swap transaction
+          example: dd22d70eb83c02232de38c2f3daad6d2470334cc4b3ec855fd4d6ac926cbf99b
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/status'
+                  data:
+                    type: object
+                    description: Detail of Swap
+                    properties:
+                      expectedAmountFrom:
+                        type: number
+                        description: Expected amount that user should deposit
+                      expectedAmountTo:
+                        type: number
+                        description: Expected amount that user will receive calculated as expectedAmountFrom - fee where fee is depending on amount.
+                      chainFrom:
+                        type: string
+                        description: 'Chain on which user will deposit coins to, selling chain'
+                      chainTo:
+                        type: number
+                        description: 'Chain on which user whishes to receive coins, buying chain'
+                      addressFrom:
+                        type: string
+                        description: Users depositing address of chainFrom
+                      addressTo:
+                        type: string
+                        description: Users receiving address on chainTo
+                      txidFrom:
+                        type: string
+                        description: Users depositing transaction ID on chainFrom
+                      zelid:
+                        type: string
+                        description: Users Zelid identifier
+                      fee:
+                        type: number
+                        description: Actual or expected fee. That amount will be sent less than amountFrom as swaps of Flux are always 1 to 1 rate
+                      status:
+                        $ref: '#/components/schemas/exchangestatus'
+                      timestamp:
+                        type: number
+                        description: Timestamp of when Swap was created
+                      confsRequired:
+                        type: number
+                        description: Confirmations on depositing chain required - depends on amount deposited
+                      amountFrom:
+                        type: number
+                        description: Actual amount deposited on chainFrom
+                      amountTo:
+                        type: number
+                        description: Actual amount sent or that will be sent on chainTo
+                      txidTo:
+                        type: string
+                        description: 'Transaction ID on receiving chainTo chain - TXID that Fusion sent to user, swap was finished.'
+              example:
+                status: success
+                data:
+                  expectedAmountFrom: 6.5
+                  expectedAmountTo: 2.5
+                  chainFrom: main
+                  chainTo: kda
+                  addressFrom: t1UPSwfMYLe18ezbCqnR5QgdJGznzCUYHkj
+                  addressTo: 3a2e6166907d0c2fb28a16cd6966a705de129e8358b9872d9cefe694e910d5b2
+                  txidFrom: dd22d70eb83c02232de38c2f3daad6d2470334cc4b3ec855fd4d6ac926cbf99b
+                  zelid: 1CbErtneaX2QVyUfwU7JGB7VzvPgrgc3uC
+                  fee: 4
+                  status: finished
+                  timestamp: 1629656716983
+                  confsRequired: 3
+                  amountFrom: 6.5
+                  amountTo: 4.5
+                  txidTo: VD2S_KF03zl6oEJHAUf0HYnXaQmTtG_KyxSrHvE-nuM
 components:
   schemas:
     signature:
