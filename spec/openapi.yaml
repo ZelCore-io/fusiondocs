@@ -1135,7 +1135,7 @@ paths:
       summary: User history of swaps
       description: >-
         Gets users history of supplied zelid based on zelid header
-      operationId: swapdetail
+      operationId: swapuserhistory
       parameters:
         - in: header
           name: zelid
