@@ -12,13 +12,13 @@ externalDocs:
   description: Fusion
   url: 'https://github.com/zelcore-io/fusion'
 tags:
-  - name: general
+  - name: General
     description: Calls that are used for overall information about Fusion
-  - name: snapshots
+  - name: Snapshot
     description: Calls for interacting with Fusion snapshots and snapshot claming
-  - name: coinbase
+  - name: Coinbase
     description: Calls for interacting with Flux coinbase and Fusion coinbase claiming (mining rewards)
-  - name: swap
+  - name: Swap
     description: Interaction with Swapping Flux between its chains using Fusion
 servers:
   - url: 'https://fusion.runonflux.io'
@@ -27,7 +27,7 @@ paths:
   /fees:
     get:
       tags:
-        - general
+        - General
       summary: Fees tied with using Fusion services
       description: 'Apart from its main chain, Flux is present also as a token on multiple other chains. Doing on chain transactions comes with a cost of using gas - native coin on those chains. Fusion is charging those fees from end user to remain sustainable in the form of sending less Flux than is user allowance. Each section has its flat fee, additionally a percentage fee may be applied.'
       operationId: fusionfees
@@ -118,7 +118,7 @@ paths:
   /messagephrase:
     get:
       tags:
-        - general
+        - General
       summary: Obtain message phrase for authentication purposes
       description: Message phrase is used for authentication purposes. This phrase is used for verifying ownership of an address. Useful for coinbase and snapshot claiming. Phrase is valid for 15 minutes and can only be used once.
       operationId: messagephrase
@@ -141,7 +141,7 @@ paths:
   /coinbase/stats:
     get:
       tags:
-        - coinbase
+        - Coiase
       summary: Statistics about coinbase and claiming process
       description: Coinbase claiming is possible since Flux fork on 27th March 2021. From blockheight 825001 all receivers of newly minted coins are eligible for additional 10% of mined coins on other parallel chains even if they have not launched yet.
       operationId: coinbasestats
@@ -679,7 +679,7 @@ paths:
   /swap/activechains:
     get:
       tags:
-        - swap
+        - Swap
       summary: Active chains for Flux Fusion Swap
       description: 'Flux operates on multiple chains and Fusion allows swapping between them. From time to time due to maintenance, some chains may not be available. This call provides all chains of Flux available for swap. Current options: "main" - Flux main chain, "kda" - FLUX-KDA, "eth" - FLUX-ETH, "bsc" - Flux-BSC.'
       operationId: swapactivechains
@@ -709,7 +709,7 @@ paths:
   /swap/info:
     get:
       tags:
-        - swap
+        - Swap
       summary: Information about Fusion Swap
       description: 'Call provides all information needed for user to create Fusion swaps. Provides active chains, coins, confirmations, fees, addresses about Fusion swap. This is a prestep before creating reservation or an actual swap'
       operationId: swapinfo
@@ -881,7 +881,7 @@ paths:
   /swap/detail:
     get:
       tags:
-        - swap
+        - Swap
       summary: Detail of a Swap
       description: Displays details of supplied swap of Fusion
       operationId: swapdetail
@@ -972,7 +972,7 @@ paths:
   /swap/userhistory:
     get:
       tags:
-        - swap
+        - Swap
       summary: User history of swaps
       description: Gets users history of supplied zelid based on zelid header
       operationId: swapuserhistory
@@ -1081,7 +1081,7 @@ paths:
   /swap/reserve:
     post:
       tags:
-        - swap
+        - Swap
       summary: Reserve swap
       description: |
         Reservation of swap is highly recommended for every Swap you want to make. You should tell Fusion that some incoming swap including particular chains and addresses will be happening. This step will trigger additional checks on the actual swap creation. Apart from body request, it is also recommended to send zelid header as another security measure and for order history tracking.
@@ -1162,7 +1162,7 @@ paths:
   /swap/create:
     post:
       tags:
-        - swap
+        - Swap
       summary: Create swap
       description: |
         Create a swap from given parameters. Depositing transaction id is then used as identifier for a swap. Apart from body request, it is also recommended to send zelid header as another security measure and for order history tracking.
