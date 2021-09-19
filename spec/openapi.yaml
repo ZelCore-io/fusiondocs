@@ -577,7 +577,7 @@ paths:
       requestBody:
         required: true
         content:
-          text/plain:
+          application/json:
             schema:
               type: object
               properties:
@@ -595,7 +595,11 @@ paths:
                         type: string
                         description: Address for which to look for coinbase summary.
             example:
-              address:
+              addressses:
+                - chain: main
+                  address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+                - chain: main
+                  address: t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy
       responses:
         "200":
           description: OK
@@ -730,7 +734,7 @@ paths:
       requestBody:
         required: true
         content:
-          text/plain:
+          application/json:
             schema:
               type: object
               properties:
@@ -1132,8 +1136,14 @@ paths:
       description: >-
         Gets users history of supplied zelid based on zelid header
       operationId: swapdetail
-      security:
-        - ZelID: []
+      parameters:
+        - in: header
+          name: zelid
+          required: true
+          schema:
+            type: string
+          description: Users ZelID
+          example: 1CbErtneaX2QVyUfwU7JGB7VzvPgrgc3uC
       responses:
         "200":
           description: OK
@@ -1243,6 +1253,213 @@ paths:
                     amountFrom: 62345.94645588
                     amountTo: 62279.94645588
                     txidTo: e59dacebcc648da2d025df2308c1b69b0c85686402a94b282dde31b7243679fa
+  /swap/reserve:
+    post:
+      tags:
+        - swap
+      summary: Reserve swap
+      description: >
+        Reservation of swap is highly recommended for every Swap you want to make. You should tell Fusion that some incoming swap
+        including particular chains and addresses will be happening. This step will trigger additional checks on the actual swap creation.
+        Apart from body request, it is also recommended to send zelid header as another security measure and for order history tracking.
+      operationId: swapreserve
+      parameters:
+        - in: header
+          name: zelid
+          required: false
+          schema:
+            type: string
+          description: Users ZelID
+          example: 1CbErtneaX2QVyUfwU7JGB7VzvPgrgc3uC
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chainFrom:
+                  type: string
+                  description: Chain from which you will be depositing to Fusion (selling coin)
+                chainTo:
+                  type: string
+                  description: Chain on which you want to buy, receive from Fusion (buying coin)
+                addressFrom:
+                  type: string
+                  description: Address from which you will be depositing, selling coins
+                addressTo:
+                  type: string
+                  description: Address to which Fusion will send you your coins, your receiving address on chainTo.
+            example:
+              chainFrom: eth
+              chainTo: main
+              addressFrom: '0xaccad76546ce0500ebc07b4d298608b8e94899e2'
+              addressTo: t1a7jWp5uy6SZwApWt9XB4gKjQmwzxGqwdq
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/status"
+                  data:
+                    type: object
+                    description: Confirmation of reservation providing supplied data
+                    properties:
+                      chainFrom:
+                        type: string
+                        description: >-
+                          User supplied chainFrom on which user will be sending funds
+                      chainTo:
+                        type: string
+                        description: >-
+                          User supplied chainTo on which user will be getting funds
+                      addressFrom:
+                        type: string
+                        description: >-
+                          User supplied addressFrom from which user will be sending funds
+                      addressTo:
+                        type: string
+                        description: >-
+                          User supplied addressTo to which user will be receiving funds
+                      zelid:
+                        type: string
+                        description: Received zelid of user from header
+                      createdAt:
+                        type: string
+                        description: Date of when swap was created
+              example:
+                status: success
+                data:
+                  chainFrom: eth
+                  chainTo: main
+                  addressFrom: '0xaccad76546ce0500ebc07b4d298608b8e94899e2'
+                  addressTo: t1a7jWp5uy6SZwApWt9XB4gKjQmwzxGqwdq
+                  zelid: 1K6nyw2VjV6jEN1f1CkbKn9htWnYkQabbR
+                  createdAt: '2021-09-12T09:36:11.129Z'
+  /swap/create:
+    post:
+      tags:
+        - swap
+      summary: Create swap
+      description: >
+        Create a swap from given parameters. Depositing transaction id is then used as identifier for a swap.
+        Apart from body request, it is also recommended to send zelid header as another security measure and for order history tracking.
+      operationId: swapcreate
+      parameters:
+        - in: header
+          name: zelid
+          required: false
+          schema:
+            type: string
+          description: Users ZelID
+          example: 1CbErtneaX2QVyUfwU7JGB7VzvPgrgc3uC
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amountFrom:
+                  type: number
+                  description: Amount that you are sending for swapping
+                chainFrom:
+                  type: string
+                  description: Chain from which you are depositing to Fusion (selling coin)
+                chainTo:
+                  type: string
+                  description: Chain on which you are buying, receiving from Fusion (buying coin)
+                addressFrom:
+                  type: string
+                  description: Address from which you are depositing, selling coins
+                addressTo:
+                  type: string
+                  description: Address to which Fusion will send you your coins, your receiving address on chainTo.
+                txidFrom:
+                  type: string
+                  description: Transaction ID of your deposit to Fusion Swap.
+            example:
+              amountFrom: 631.625
+              chainFrom: eth
+              chainTo: main
+              addressFrom: '0xaccad76546ce0500ebc07b4d298608b8e94899e2'
+              addressTo: t1a7jWp5uy6SZwApWt9XB4gKjQmwzxGqwdq
+              txidFrom: '0x7c29c30573a1205a851b7d47c504959a66b7045f9d8dfcd83322a11bc74c323a'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/status"
+                  data:
+                    type: object
+                    description: Successful swap creation data
+                    properties:
+                      chainFrom:
+                        type: string
+                        description: >-
+                          User supplied chainFrom on which user is sending funds
+                      chainTo:
+                        type: string
+                        description: >-
+                          User supplied chainTo on which user will be getting funds
+                      addressFrom:
+                        type: string
+                        description: >-
+                          User supplied addressFrom from which user is sending funds
+                      addressTo:
+                        type: string
+                        description: >-
+                          User supplied addressTo to which user will be receiving funds
+                      zelid:
+                        type: string
+                        description: Received zelid of user from header
+                      txidFrom:
+                        type: string
+                        description: >-
+                          Users depositing transaction ID on chainFrom
+                      fee:
+                        type: number
+                        description: >-
+                          Expected fee based on chain and user supplied amountFrom
+                      status: 
+                        type: string
+                        description: Status of swap. Always new for newly created swaps
+                      expectedAmountFrom:
+                        type: number
+                        description: >-
+                          Expected amount that user is depositing - suplpied from amountFrom
+                      expectedAmountTo:
+                        type: number
+                        description: >-
+                          Expected amount that user will receive calculated as expectedAmountFrom - fee where fee is depending on chain and supplied amountFrom.
+                      confsRequired:
+                        type: number
+                        description: >-
+                          Expected number of confirmation your deposit transaction will need to have. Based on amountFrom and chain.
+                          May also change if actual deposited funds are different than user supplied amountFrom
+              example:
+                status: success
+                data:
+                  chainFrom: eth
+                  chainTo: main
+                  addressFrom: '0xaccad76546ce0500ebc07b4d298608b8e94899e2'
+                  addressTo: t1a7jWp5uy6SZwApWt9XB4gKjQmwzxGqwdq
+                  zelid: 1K6nyw2VjV6jEN1f1CkbKn9htWnYkQabbR
+                  timestamp: 1631439372297
+                  expectedAmountFrom: 631.625
+                  expectedAmountTo: 625.625
+                  txidFrom: '0x7c29c30573a1205a851b7d47c504959a66b7045f9d8dfcd83322a11bc74c323a'
+                  fee: 6
+                  confsRequired: 4
 components:
   schemas:
     signature:
@@ -1308,10 +1525,3 @@ components:
       description: ZelID header
       schema:
         type: string
-  securitySchemes:
-    ZelID:
-      description: >-
-        ZelID of user
-      type: apiKey
-      in: header
-      name: zelid
