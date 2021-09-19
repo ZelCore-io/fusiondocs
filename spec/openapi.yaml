@@ -16,16 +16,16 @@ externalDocs:
   description: Fusion
   url: "https://github.com/zelcore-io/fusion"
 tags:
-  - name: general
+  - name: General
     description: >-
       Calls that are used for overall information about Fusion
-  - name: snapshots
+  - name: Snapshot
     description: >-
       Calls for interacting with Fusion snapshots and snapshot claming
-  - name: coinbase
+  - name: Coinbase
     description: >-
       Calls for interacting with Flux coinbase and Fusion coinbase claiming (mining rewards)
-  - name: swap
+  - name: Swap
     description: >-
       Interaction with Swapping Flux between its chains using Fusion
 servers:
@@ -35,7 +35,7 @@ paths:
   /fees:
     get:
       tags:
-        - general
+        - General
       summary: Fees tied with using Fusion services
       description: >-
         Apart from its main chain, Flux is present also as a token on multiple other chains. Doing on chain transactions comes
@@ -165,7 +165,7 @@ paths:
   /messagephrase:
     get:
       tags:
-        - general
+        - General
       summary: Obtain message phrase for authentication purposes
       description: >-
         Message phrase is used for authentication purposes. This phrase is used for verifying
@@ -192,7 +192,7 @@ paths:
   /coinbase/stats:
     get:
       tags:
-        - coinbase
+        - Coiase
       summary: Statistics about coinbase and claiming process
       description: >-
         Coinbase claiming is possible since Flux fork on 27th March 2021. From blockheight 825001
@@ -778,7 +778,7 @@ paths:
   /swap/activechains:
     get:
       tags:
-        - swap
+        - Swap
       summary: Active chains for Flux Fusion Swap
       description: >-
         Flux operates on multiple chains and Fusion allows swapping between them. From time to time due to maintenance, some chains may not be available.
@@ -810,7 +810,7 @@ paths:
   /swap/info:
     get:
       tags:
-        - swap
+        - Swap
       summary: Information about Fusion Swap
       description: >-
         Call provides all information needed for user to create Fusion swaps. Provides active chains, coins, confirmations, fees, addresses about Fusion swap.
@@ -1025,7 +1025,7 @@ paths:
   /swap/detail:
     get:
       tags:
-        - swap
+        - Swap
       summary: Detail of a Swap
       description: >-
         Displays details of supplied swap of Fusion
@@ -1131,7 +1131,7 @@ paths:
   /swap/userhistory:
     get:
       tags:
-        - swap
+        - Swap
       summary: User history of swaps
       description: >-
         Gets users history of supplied zelid based on zelid header
@@ -1256,7 +1256,7 @@ paths:
   /swap/reserve:
     post:
       tags:
-        - swap
+        - Swap
       summary: Reserve swap
       description: >
         Reservation of swap is highly recommended for every Swap you want to make. You should tell Fusion that some incoming swap
@@ -1343,7 +1343,7 @@ paths:
   /swap/create:
     post:
       tags:
-        - swap
+        - Swap
       summary: Create swap
       description: >
         Create a swap from given parameters. Depositing transaction id is then used as identifier for a swap.
