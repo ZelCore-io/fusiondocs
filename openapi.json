@@ -960,6 +960,308 @@
           }
         }
       }
+    },
+    "/swap/activechains": {
+      "get": {
+        "tags": [
+          "swap"
+        ],
+        "summary": "Active chains for Flux Fusion Swap",
+        "description": "Flux operates on multiple chains and Fusion allows swapping between them. From time to time due to maintenance, some chains may not be available. This call provides all chains of Flux available for swap. Current options: \"main\" - Flux main chain, \"kda\" - FLUX-KDA, \"eth\" - FLUX-ETH, \"bsc\" - Flux-BSC.",
+        "operationId": "swapactivechains",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "List of available chains",
+                      "items": {
+                        "type": "string",
+                        "description": "chain identifier"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": [
+                    "main",
+                    "kda",
+                    "eth",
+                    "bsc"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/swap/info": {
+      "get": {
+        "tags": [
+          "swap"
+        ],
+        "summary": "Information about Fusion Swap",
+        "description": "Call provides all information needed for user to create Fusion swaps. Provides active chains, coins, confirmations, fees, addresses about Fusion swap. This is a prestep before creating reservation or an actual swap",
+        "operationId": "swapinfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Information about Fusion Swap",
+                      "properties": {
+                        "chains": {
+                          "type": "array",
+                          "description": "List of available chains",
+                          "items": {
+                            "type": "string",
+                            "description": "chain identifier"
+                          }
+                        },
+                        "coins": {
+                          "type": "array",
+                          "description": "Information about Flux Fusion coins",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "coin": {
+                                "type": "string",
+                                "description": "Zelcore coin identifier"
+                              },
+                              "chain": {
+                                "type": "string",
+                                "description": "Chain on which coin operates"
+                              }
+                            }
+                          }
+                        },
+                        "confirmations": {
+                          "type": "array",
+                          "description": "Necessary amount of blockchain confirmations for swap to begin for given amount or lower amount. If amount is higher than confirmation amount, swap cannot be processed. Do not send higher amounts than maximum!",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "confirmations": {
+                                "type": "number",
+                                "description": "Required number of confirmations on depositing coin"
+                              },
+                              "amount": {
+                                "type": "number",
+                                "description": "Amount per which the required number of confirmations is shown"
+                              }
+                            }
+                          }
+                        },
+                        "fees": {
+                          "type": "object",
+                          "description": "Fees information for Fusion services",
+                          "properties": {
+                            "snapshot": {
+                              "type": "object",
+                              "description": "Fees tied with claiming snapshot",
+                              "properties": {
+                                "percentage": {
+                                  "type": "number",
+                                  "description": "Percentage fee from amount. Percentage fee is in absolute value. To get the percentage fee substracted, multiply percentage with user amount and round up to higher value."
+                                },
+                                "kda": {
+                                  "type": "number",
+                                  "description": "Flat Flux-KDA fee for claiming snapshot on KDA chain. User will receive this amount of Flux-KDA less."
+                                },
+                                "eth": {
+                                  "type": "number",
+                                  "description": "Flat Flux-ETH fee for claiming snapshot on ETH chain. User will receive this amount of Flux-ETH less."
+                                },
+                                "bsc": {
+                                  "type": "number",
+                                  "description": "Flat Flux-BSC fee for claiming snapshot on BSC chain. User will receive this amount of Flux-BSC less."
+                                }
+                              }
+                            },
+                            "mining": {
+                              "type": "object",
+                              "description": "Percentage fee from amount. Percentage fee is in absolute value. To get the percentage fee substracted, multiply percentage with user amount and round up to higher value.",
+                              "properties": {
+                                "percentage": {
+                                  "type": "number",
+                                  "description": "Percentage fee from amount. Users claimable amount will firstly be substracted of this amount of percent. Rounded to higher amount."
+                                },
+                                "kda": {
+                                  "type": "number",
+                                  "description": "Flat Flux-KDA fee for claiming coinbase on KDA chain. User will receive this amount of Flux-KDA less."
+                                },
+                                "eth": {
+                                  "type": "number",
+                                  "description": "Flat Flux-ETH fee for claiming coinbase on ETH chain. User will receive this amount of Flux-ETH less."
+                                },
+                                "bsc": {
+                                  "type": "number",
+                                  "description": "Flat Flux-BSC fee for claiming coinbase on BSC chain. User will receive this amount of Flux-BSC less."
+                                }
+                              }
+                            },
+                            "swap": {
+                              "type": "object",
+                              "description": "Fees tied with swapping Flux between chains. Receiving (TO) asset is  substracted for the amount. In case of swap from BSC chain to ETH chain, use eth fee as Fusion is sending Flux-ETH and pays Ethereum network fee which is beared by end user by sending less Flux.",
+                              "properties": {
+                                "percentage": {
+                                  "type": "number",
+                                  "description": "Percentage fee from amount. Percentage fee is in absolute value. To get the percentage fee substracted, multiply percentage with user  sent amount and round up to higher value."
+                                },
+                                "kda": {
+                                  "type": "number",
+                                  "description": "Flat Flux-KDA fee for swapping to KDA chain. User will receive this amount of Flux-KDA less."
+                                },
+                                "eth": {
+                                  "type": "number",
+                                  "description": "Flat Flux-ETH fee for swapping to ETH chain. User will receive this amount of Flux-ETH less."
+                                },
+                                "bsc": {
+                                  "type": "number",
+                                  "description": "Flat Flux-BSC fee for swapping to BSC chain. User will receive this amount of Flux-BSC less."
+                                },
+                                "main": {
+                                  "type": "number",
+                                  "description": "Flat Flux fee for swapping to Main chain. User will receive this amount of Flux less."
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "swapAddresses": {
+                          "type": "array",
+                          "description": "Deposit Swap Addressses of Fusion. You will be sending your depositing coin to the following address corresponding to your depositing chain",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "chain": {
+                                "type": "string",
+                                "description": "Chain to which Address/Account belongs to"
+                              },
+                              "address": {
+                                "type": "string",
+                                "description": "Address/Account to deposit coins to"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "chains": [
+                      "main",
+                      "kda",
+                      "eth",
+                      "bsc"
+                    ],
+                    "coins": [
+                      {
+                        "coin": "zelcash",
+                        "chain": "main"
+                      },
+                      {
+                        "coin": "fluxkda",
+                        "chain": "kda"
+                      },
+                      {
+                        "coin": "fluxeth",
+                        "chain": "eth"
+                      },
+                      {
+                        "coin": "fluxbsc",
+                        "chain": "bsc"
+                      }
+                    ],
+                    "confirmations": [
+                      {
+                        "confirmations": 4,
+                        "amount": 5000
+                      },
+                      {
+                        "confirmations": 7,
+                        "amount": 10000
+                      },
+                      {
+                        "confirmations": 12,
+                        "amount": 25000
+                      },
+                      {
+                        "confirmations": 20,
+                        "amount": 50000
+                      },
+                      {
+                        "confirmations": 30,
+                        "amount": 100000
+                      }
+                    ],
+                    "fees": {
+                      "snapshot": {
+                        "percentage": 0,
+                        "kda": 5,
+                        "bsc": 11,
+                        "eth": 141
+                      },
+                      "mining": {
+                        "percentage": 0,
+                        "kda": 5,
+                        "bsc": 11,
+                        "eth": 141
+                      },
+                      "swap": {
+                        "percentage": 0.001,
+                        "main": 5,
+                        "kda": 5,
+                        "bsc": 11,
+                        "eth": 154
+                      }
+                    },
+                    "swapAddresses": [
+                      {
+                        "chain": "main",
+                        "address": "t1abAp9oZenibGLFuZKyUjmL6FiATTaCYaj"
+                      },
+                      {
+                        "chain": "kda",
+                        "address": "fluxswap"
+                      },
+                      {
+                        "chain": "eth",
+                        "address": "0x134e4c74c670adefdcb2476df6960d9297bc7dad"
+                      },
+                      {
+                        "chain": "bsc",
+                        "address": "0x9b192227da99b5a50d037b10c965609ed83c43d7"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
