@@ -141,7 +141,7 @@ paths:
   /coinbase/stats:
     get:
       tags:
-        - Coiase
+        - Coinbase
       summary: Statistics about coinbase and claiming process
       description: Coinbase claiming is possible since Flux fork on 27th March 2021. From blockheight 825001 all receivers of newly minted coins are eligible for additional 10% of mined coins on other parallel chains even if they have not launched yet.
       operationId: coinbasestats
@@ -197,7 +197,7 @@ paths:
   /coinbase/summary:
     get:
       tags:
-        - coinbase
+        - Coinbase
       summary: Summary of Flux address for coinbase
       description: 'Displays summary of given Flux address of Fusion coinbase statistics. Node operators can claim without a need for whitelist, miners and pools have to be whitelisted first.'
       operationId: coinbasesummaryaddress
@@ -298,7 +298,7 @@ paths:
   /coinbase/records:
     get:
       tags:
-        - coinbase
+        - Coinbase
       summary: Statistics and coinbase records
       description: Statistics and recorded coinbase (mining) records for given address
       operationId: coinbaserecordsaddress
@@ -388,7 +388,7 @@ paths:
   /coinbase/claimed:
     get:
       tags:
-        - coinbase
+        - Coinbase
       summary: Claimed records of coinbase
       description: Statistics and claimed records of coinbase (mining) for given address
       operationId: coinbaseclaimedaddresschain
@@ -482,7 +482,7 @@ paths:
   /coinbase/available:
     post:
       tags:
-        - coinbase
+        - Coinbase
       summary: Checks available coinbase for addresses
       description: Gets Fusion coinbase summary for up to 12 addresses
       operationId: coinbaseavailable
@@ -628,7 +628,7 @@ paths:
   /coinbase/claim:
     post:
       tags:
-        - coinbase
+        - Coinbase
       summary: Claim coinbase rewards
       description: Claim coinbase (mining) rewards for a given address on a given chain
       operationId: coinbaseclaim
