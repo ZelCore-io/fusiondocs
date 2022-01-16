@@ -1,5 +1,5 @@
 # Fusion documentation - OpenAPI Specification
-[![Build Status](https://travis-ci.com/ZelCore-io/fusiondocs.svg?token=AqeptMGfHhWiejBbMZiF&branch=main)](https://travis-ci.com/zelcore-io/fusiondocs)
+[![Build Status](https://app.travis-ci.com/ZelCore-io/fusiondocs.svg?branch=master)](https://travis-ci.com/zelcore-io/fusiondocs)
 
 [Fusion](https://github.com/zelcore-io/fusion/)
 
