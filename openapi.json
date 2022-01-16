@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Fusion",
     "contact": {
       "email": "tadeas@runonflux.io",
@@ -267,14 +267,19 @@
                 "example": {
                   "status": "success",
                   "data": {
-                    "total": 491906,
-                    "totalClaimed": 1338,
-                    "totalSatoshis": 1837401366485023,
-                    "totalFunds": 18374013.66485023,
-                    "totalFundsClaimable": 18374013.66485023,
-                    "totalFundsClaimed": 308116.25659239,
-                    "totalFundsClaimablePerChain": 1837401.36648502,
-                    "totalFeesPaid": 16628
+                    "total": 1001919,
+                    "totalClaimed": 11685,
+                    "totalSatoshis": 2584185570380244,
+                    "totalFunds": 25841855.70380244,
+                    "totalFundsClaimable": 25841855.70380244,
+                    "totalFundsClaimed": 7607576.62356944,
+                    "totalFundsClaimablePerChain": 2584185.57038024,
+                    "totalFeesPaid": 116613,
+                    "kdaFeesPaid": 10617,
+                    "ethFeesPaid": 71456,
+                    "bscFeesPaid": 22860,
+                    "trxFeesPaid": 7167,
+                    "solFeesPaid": 4513
                   }
                 }
               }
@@ -415,6 +420,20 @@
                         "receivedAmount": 88.9375,
                         "feesPaid": 11,
                         "possibleToClaim": 2.8125
+                      },
+                      {
+                        "chain": "trx",
+                        "claimedAmount": 0,
+                        "receivedAmount": 0,
+                        "feesPaid": 0,
+                        "possibleToClaim": 102.75
+                      },
+                      {
+                        "chain": "sol",
+                        "claimedAmount": 0,
+                        "receivedAmount": 0,
+                        "feesPaid": 0,
+                        "possibleToClaim": 102.75
                       }
                     ]
                   }
@@ -1005,7 +1024,9 @@
                     "main",
                     "kda",
                     "eth",
-                    "bsc"
+                    "bsc",
+                    "sol",
+                    "trx"
                   ]
                 }
               }
@@ -1183,7 +1204,9 @@
                       "main",
                       "kda",
                       "eth",
-                      "bsc"
+                      "bsc",
+                      "trx",
+                      "sol"
                     ],
                     "coins": [
                       {
@@ -1200,6 +1223,14 @@
                       },
                       {
                         "coin": "fluxbsc",
+                        "chain": "bsc"
+                      },
+                      {
+                        "coin": "fluxtrx",
+                        "chain": "bsc"
+                      },
+                      {
+                        "coin": "fluxsol",
                         "chain": "bsc"
                       }
                     ],
@@ -1230,20 +1261,27 @@
                         "percentage": 0,
                         "kda": 5,
                         "bsc": 11,
-                        "eth": 141
+                        "eth": 141,
+                        "trx": 2,
+                        "sol": 2
                       },
                       "mining": {
                         "percentage": 0,
                         "kda": 5,
                         "bsc": 11,
-                        "eth": 141
+                        "eth": 141,
+                        "trx": 2,
+                        "sol": 2
                       },
                       "swap": {
                         "percentage": 0.001,
+                        "premiumPercentage": 0.0002,
                         "main": 5,
                         "kda": 5,
                         "bsc": 11,
-                        "eth": 154
+                        "eth": 154,
+                        "trx": 2,
+                        "sol": 2
                       }
                     },
                     "swapAddresses": [
@@ -1262,6 +1300,14 @@
                       {
                         "chain": "bsc",
                         "address": "0x9b192227da99b5a50d037b10c965609ed83c43d7"
+                      },
+                      {
+                        "chain": "trx",
+                        "address": "TA7U2PTnHDyhHBns3X6NsDndjZDBUE3oUa"
+                      },
+                      {
+                        "chain": "sol",
+                        "address": "3q79qsEp9CoCpNE2poy5stVKmXqWruLdwxn5KWNHeUNk"
                       }
                     ]
                   }
@@ -1855,7 +1901,9 @@
           "main",
           "eth",
           "bsc",
-          "kda"
+          "kda",
+          "trx",
+          "sol"
         ]
       },
       "exchangestatus": {
