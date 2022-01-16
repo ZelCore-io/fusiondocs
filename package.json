@@ -1,6 +1,6 @@
 {
   "name": "fusiondocs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Zelcore Technologies",
   "private": true,
   "license": "UNLICENSED",
@@ -8,11 +8,11 @@
     "type": "git",
     "url": "git://github.com/zelcore-io/fusiondocs.git"
   },
-  "description": "ABE documentation",
+  "description": "Fusion documentation",
   "contributors": [
     {
       "name": "Tadeas Kmenta",
-      "email": "tadeas@runonflux.io"
+      "email": "tadeas@zelcore.io"
     }
   ],
   "scripts": {
