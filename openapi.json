@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.1",
+    "version": "1.1.0",
     "title": "Fusion",
     "contact": {
       "email": "tadeas@runonflux.io",
@@ -10,7 +10,7 @@
     "license": {
       "name": "UNLICENSED"
     },
-    "description": "This is an API documentation for Fusion mainly used in zelcore. Calls can additionally provide zelid header where zelid is zelcores ZelID or any bitcoin user address. Currently supported chains are: Main chain, Ethereum (ETH) chain, Binance Smart Chain (BSC) chain and Kadena (KDA) chain where fusion operates on chain ID 0."
+    "description": "This is an API documentation for Fusion mainly used in zelcore. Calls can additionally provide zelid header where zelid is zelcores ZelID or any bitcoin user address. Currently supported chains are: Main chain, Ethereum (ETH) chain, Binance Smart Chain (BSC) chain, Tron (TRX), Solana (SOL) and Kadena (KDA) chain where fusion operates on chain ID 0."
   },
   "externalDocs": {
     "description": "Fusion",
@@ -85,6 +85,14 @@
                             "bsc": {
                               "type": "number",
                               "description": "Flat Flux-BSC fee for claiming snapshot on BSC chain. User will receive this amount of Flux-BSC less."
+                            },
+                            "trx": {
+                              "type": "number",
+                              "description": "Flat Flux-TRX fee for claiming snapshot on TRX chain. User will receive this amount of Flux-TRX less."
+                            },
+                            "sol": {
+                              "type": "number",
+                              "description": "Flat Flux-SOL fee for claiming snapshot on SOL chain. User will receive this amount of Flux-SOL less."
                             }
                           }
                         },
@@ -107,6 +115,14 @@
                             "bsc": {
                               "type": "number",
                               "description": "Flat Flux-BSC fee for claiming coinbase on BSC chain. User will receive this amount of Flux-BSC less."
+                            },
+                            "trx": {
+                              "type": "number",
+                              "description": "Flat Flux-TRX fee for claiming coinbase on TRX chain. User will receive this amount of Flux-TRX less."
+                            },
+                            "sol": {
+                              "type": "number",
+                              "description": "Flat Flux-SOL fee for claiming coinbase on SOL chain. User will receive this amount of Flux-SOL less."
                             }
                           }
                         },
@@ -130,6 +146,14 @@
                               "type": "number",
                               "description": "Flat Flux-BSC fee for swapping to BSC chain. User will receive this amount of Flux-BSC less."
                             },
+                            "trx": {
+                              "type": "number",
+                              "description": "Flat Flux-TRX fee for swapping to TRX chain. User will receive this amount of Flux-TRX less."
+                            },
+                            "sol": {
+                              "type": "number",
+                              "description": "Flat Flux-SOL fee for swapping to SOL chain. User will receive this amount of Flux-SOL less."
+                            },
                             "main": {
                               "type": "number",
                               "description": "Flat Flux fee for swapping to Main chain. User will receive this amount of Flux less."
@@ -145,22 +169,28 @@
                   "data": {
                     "snapshot": {
                       "percentage": 0,
-                      "kda": 5,
-                      "bsc": 11,
-                      "eth": 141
+                      "kda": 1,
+                      "bsc": 2,
+                      "eth": 13,
+                      "trx": 3,
+                      "sol": 2
                     },
                     "mining": {
                       "percentage": 0,
-                      "kda": 5,
-                      "bsc": 11,
-                      "eth": 141
+                      "kda": 2,
+                      "bsc": 2,
+                      "eth": 11,
+                      "trx": 3,
+                      "sol": 2
                     },
                     "swap": {
                       "percentage": 0.001,
-                      "main": 5,
-                      "kda": 5,
-                      "bsc": 11,
-                      "eth": 154
+                      "main": 0.5,
+                      "kda": 0.5,
+                      "bsc": 1.5,
+                      "eth": 9,
+                      "trx": 2.5,
+                      "sol": 1.5
                     }
                   }
                 }
@@ -871,6 +901,20 @@
                           "receivedAmount": 88.9375,
                           "feesPaid": 11,
                           "possibleToClaim": 2.8125
+                        },
+                        {
+                          "chain": "trx",
+                          "claimedAmount": 0,
+                          "receivedAmount": 0,
+                          "feesPaid": 0,
+                          "possibleToClaim": 102.75
+                        },
+                        {
+                          "chain": "sol",
+                          "claimedAmount": 0,
+                          "receivedAmount": 0,
+                          "feesPaid": 0,
+                          "possibleToClaim": 102.75
                         }
                       ]
                     },
@@ -900,6 +944,20 @@
                         },
                         {
                           "chain": "bsc",
+                          "claimedAmount": 0,
+                          "receivedAmount": 0,
+                          "feesPaid": 0,
+                          "possibleToClaim": 124878.32671191
+                        },
+                        {
+                          "chain": "trx",
+                          "claimedAmount": 0,
+                          "receivedAmount": 0,
+                          "feesPaid": 0,
+                          "possibleToClaim": 124878.32671191
+                        },
+                        {
+                          "chain": "sol",
                           "claimedAmount": 0,
                           "receivedAmount": 0,
                           "feesPaid": 0,
