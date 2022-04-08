@@ -235,6 +235,551 @@
         }
       }
     },
+    "/snapshots/stats": {
+      "get": {
+        "tags": [
+          "Snapshot"
+        ],
+        "summary": "Statistics about snapshot for reward and snapshot chains",
+        "description": "Gives statistics about snapshot given a reward chain and a snapshotted chain. Only certain combination of chains are possible in order of which chains were launched.",
+        "operationId": "snapshotsstats",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "rewardchain",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Chain on which reward will be claimed",
+            "example": "trx"
+          },
+          {
+            "in": "query",
+            "name": "snapshotchain",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Chain that was snapshotted",
+            "example": "bsc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Coinbase general information statistics",
+                      "properties": {
+                        "total": {
+                          "type": "number",
+                          "description": "Total snapshot records present in database. This many addresses were snapshotted on a snapshot blockheight."
+                        },
+                        "totalClaimPossible": {
+                          "type": "number",
+                          "description": "Addresses that are eligible to claim a snapshot. Lower number than total snapshotted addresses is caused by associated Fusion fees for a snapshot claim such as blockchain network fees."
+                        },
+                        "totalClaimed": {
+                          "type": "number",
+                          "description": "Amount of adresses that already claimed snapshot on the reward chain."
+                        },
+                        "totalSatoshis": {
+                          "type": "number",
+                          "description": "Amount of satoshis (basic unit of Flux. 1 FLUX = 1e8 satoshis) that was totally snapshotted. At a given blockheight of snapshot, this many satoshis were in circulation on the snapshotted chain."
+                        },
+                        "totalFunds": {
+                          "type": "number",
+                          "description": "Amount of Flux that was totally snapshotted. At a given blockheight of snapshot, this many Flux was in circulation on the snapshotted chain."
+                        },
+                        "totalFundsClaimable": {
+                          "type": "number",
+                          "description": "Amount of Flux that is claimable on reward chain from this snapshot that will be totally distributed."
+                        },
+                        "totalFundsClaimed": {
+                          "type": "number",
+                          "description": "Amount of Flux that was already claimed on reward chain from this snapshot."
+                        },
+                        "totalFeesPaid": {
+                          "type": "number",
+                          "description": "Claiming snapshot is associated with fees to pay for gas on particular chain. totalFeesPaid is amount of Flux that user indirectly paid for claiming the snapshot by receiving little less. The fees go to Flux Foundation for Fusion operation."
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "total": 5522,
+                    "totalClaimPossible": 1073,
+                    "totalClaimed": 517,
+                    "totalSatoshis": 728738706660070,
+                    "totalFunds": 7287387.0666007,
+                    "totalFundsClaimable": 482860.16345812,
+                    "totalFundsClaimed": 438994.7987284,
+                    "totalFeesPaid": 1972
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/snapshots/info": {
+      "get": {
+        "tags": [
+          "Snapshot"
+        ],
+        "summary": "Get information about particular snapshot record",
+        "description": "Snapshot record gives accurate information about specific snapshot record of both unclaimed or claimedAddress. Must be searched by chains and one of: snapshotted address, claiming address or claimed transaction.",
+        "operationId": "snapshotsinfo",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "rewardchain",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Chain on which reward will be claimed",
+            "example": "eth"
+          },
+          {
+            "in": "query",
+            "name": "snapshotchain",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Chain that was snapshotted",
+            "example": "main"
+          },
+          {
+            "in": "query",
+            "name": "address",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Address that got snapshotted",
+            "example": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU"
+          },
+          {
+            "in": "query",
+            "name": "claimedaddress",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Address that claimed snapshot",
+            "example": "0x316594e7f55865e27a3abc69cddf0b404b34f3b2"
+          },
+          {
+            "in": "query",
+            "name": "txid",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Transaction ID of claimed snapshot",
+            "example": "0x72d3a409ea54ea11b1ba4166bbad90ebf092a46d0d743b8c950f2d86694778f6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Summary of snapshot record",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Snapshotted address belonging to record"
+                        },
+                        "satoshis": {
+                          "type": "number",
+                          "description": "Total snapshotted amount in satoshis."
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "Total snapshotted amount in full Flux units."
+                        },
+                        "claimableAmount": {
+                          "type": "number",
+                          "description": "Amount that is claimable on reward chain in full Flux units."
+                        },
+                        "claimedAddress": {
+                          "type": "string",
+                          "description": "Address on reward chain that claimed the snapshot. Can be missing if record is unclaimed."
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Message used for verifying ownership of snapshotted address. Can be missing if record is unclaimed."
+                        },
+                        "signature": {
+                          "type": "string",
+                          "description": "Signature of a message signed by snapshotted address. Can be missing if record is unclaimed."
+                        },
+                        "txid": {
+                          "type": "string",
+                          "description": "Transaction ID of funds being sent from Fusion to claimed address. Can be missing if record is unclaimed."
+                        },
+                        "fee": {
+                          "type": "number",
+                          "description": "Fee that claiming of a snapshot is associated with. For this amount user received less Flux. Can be missing if record is unclaimed."
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "address": "t1Rp4xDWFCTGfxXKrayDU83tX7HV91nZ7By",
+                    "satoshis": 1000562500000,
+                    "amount": 10005.625,
+                    "claimableAmount": 662.96982428,
+                    "claimedAddress": "HQDBXLyZHYRs34cfyYSqUjgg2i9KWwckaqcE8iakLLiu",
+                    "fee": 3,
+                    "message": "16406467156959e6nd05ek0jj42r1ugvbp0uli9zsp3j2pg2y4965v105",
+                    "signature": "H/YLCh6MgoTpmOIQUWZOZwOpWhDLkZ1r0LrEIaAdCvVuYwj3B42hFcsl16Yu6zwociBEXhZuI8TemAEd15qrL8A=",
+                    "txid": "3nJVVJXGw3XHHgucEXUE71mriPJXLddBoPHfAGzaCdGJaFXTeFygzCuDBJt2voNPQjSYj82fEHGHBZWmAairCU1U"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/snapshots/available": {
+      "post": {
+        "tags": [
+          "Snapshot"
+        ],
+        "summary": "Checks available snapshots for addresses",
+        "description": "Gets Fusion snapshots summary for given Flux addresses. Snapshot information will be given on all possible rewards chains for a given snapshot address and snapshotted chain.",
+        "operationId": "snapshotsavailable",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "addresses": {
+                    "type": "array",
+                    "description": "An array of adresses information",
+                    "items": {
+                      "type": "object",
+                      "description": "Object specifying address and chain",
+                      "properties": {
+                        "chain": {
+                          "type": "string",
+                          "description": "Chain on which to look for snapshotted address summary."
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "Address for which to look for snapshot summary."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "addressses": [
+                  {
+                    "chain": "main",
+                    "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU"
+                  },
+                  {
+                    "chain": "main",
+                    "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU"
+                  },
+                  {
+                    "chain": "kda",
+                    "address": "e9fe1ef98e46283a153d4af1f5d68bcfa94b882579a053c3f0dd9272c05aa4d8"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Summary of snapshots for a given array of addresses",
+                      "items": {
+                        "type": "object",
+                        "description": "Summary of snapshot for a given address",
+                        "properties": {
+                          "address": {
+                            "type": "string",
+                            "description": "Given address"
+                          },
+                          "satoshis": {
+                            "type": "number",
+                            "description": "Snapshotted amount in satoshis."
+                          },
+                          "amount": {
+                            "type": "number",
+                            "description": "Snapshotted amount in Flux units."
+                          },
+                          "claimableAmount": {
+                            "type": "number",
+                            "description": "Amount in Flux that is claimable on reward chain."
+                          },
+                          "chain": {
+                            "type": "string",
+                            "description": "Chain on which reward is claimable"
+                          },
+                          "snapshot": {
+                            "type": "string",
+                            "description": "Chain to which address is associated with and that was snapshotted."
+                          },
+                          "claimedAddress": {
+                            "type": "string",
+                            "description": "Address that claimed the snapshot on a chain. Can be missing if snapshot is unclaimed."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Message that was used for verifying ownership of snapshotted address."
+                          },
+                          "signature": {
+                            "type": "string",
+                            "description": "Signature that belong to the message signed by snapshotted address."
+                          },
+                          "txid": {
+                            "type": "string",
+                            "description": "Transaction ID of snapshot reward being sent to claimedAddress."
+                          },
+                          "fee": {
+                            "type": "number",
+                            "description": "Fees that were paid for receiving Flux on the reward chain."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": [
+                    {
+                      "address": "t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy",
+                      "satoshis": 1106175894743,
+                      "amount": 11061.75894743,
+                      "claimableAmount": 907.71079906,
+                      "claimedAddress": "0x9b1c6ed51fc47ee8bc0f41031eff03aeb131e3a8",
+                      "fee": 39,
+                      "message": "1639777017030h9xh3i9xx5p84196ke50qgq6v6slunsbzusjmv2vyso",
+                      "signature": "HzkZdfeT/ILAETAmql+gsiN+5g0KSWn1k3n2RlEPBv9HTXt5vGozHz5ttAQ33x39AiOgpaRti8lYMZNRnSM0+IA=",
+                      "txid": "0xc73c6749a389c83836129c859f7f0d6647967d780f3fee48ec45fdf1cd8d1ab7",
+                      "chain": "main",
+                      "snapshot": "eth"
+                    },
+                    {
+                      "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                      "satoshis": 1000000000000,
+                      "amount": 10000,
+                      "claimableAmount": 820.58450503,
+                      "claimedAddress": "0x316594e7f55865e27a3abc69cddf0b404b34f3b2",
+                      "fee": 50,
+                      "message": "1624179303519xx4k3l8xipdvvw0k6ivx6zd12eln5917fdpkv5pec2",
+                      "signature": "H1pyj6PJP5e0m9N1JeCp8hSieDlVkFQ0zytKP+AqVS9jKsaGnOB9VA6HnZxedkX/uKXiUY58koQ4NomOMZCY99Q=",
+                      "txid": "0x089c21ee0a5307b6d5aae7d554b3b757c5e54ddba3ca9b5b3c11f70c8fb2e1f6",
+                      "chain": "main",
+                      "snapshot": "eth"
+                    },
+                    {
+                      "address": "t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy",
+                      "satoshis": 1106175894743,
+                      "amount": 11061.75894743,
+                      "claimableAmount": 907.71079906,
+                      "claimedAddress": "0x9b1c6ed51fc47ee8bc0f41031eff03aeb131e3a8",
+                      "fee": 2,
+                      "message": "1639777072102jiug2ldpp9jeh12asmpwkbjheyk4t80p8lfa9atgpad",
+                      "signature": "H/LCW2JU87pXt12sS0gAXgiorVr/yDepFbkNRfhXAtcMLbUjGC9GI51yIX9pp8TjhHIdQ3tnHSZ7UAXC0V2+9/I=",
+                      "txid": "0x02ad5a46ead8fe67bb21434116259ac09e3d54f1ee86aed6ebf286d8663030a7",
+                      "chain": "main",
+                      "snapshot": "bsc"
+                    },
+                    {
+                      "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                      "satoshis": 1000000000000,
+                      "amount": 10000,
+                      "claimableAmount": 820.58450503,
+                      "claimedAddress": "0x316594e7f55865e27a3abc69cddf0b404b34f3b2",
+                      "fee": 5,
+                      "message": "16241430643672o36nc8hzhqe5b09f92znfto7tz17tqcn8nzw5v5ads6",
+                      "signature": "IEsXaAFCGQ7lVbuRqPyD8AJAotqOhXCeYORfBUfJ3nI7LOGVv3QgX1jXoNpwu6LYgsW68FNRivENPm+DN0aWS6Y=",
+                      "txid": "0x55cb17a877a7c85bdbe3b97fa3d2abec088ed297d680af6410eedb7f6b899650",
+                      "chain": "main",
+                      "snapshot": "bsc"
+                    },
+                    {
+                      "address": "t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy",
+                      "satoshis": 1888954204820,
+                      "amount": 18889.5420482,
+                      "claimableAmount": 1251.61560346,
+                      "claimedAddress": "TQ7MoM8ss7a3xWK5gWzQhoHCCxZ1Nt4jZ6",
+                      "fee": 4,
+                      "message": "1639776623443q4fpg3icp7jt5xp1sn4ez81un04dumg3yphx9ikm",
+                      "signature": "H+o5KiHl4FZXcEfemWzEEBNLxhEImtAiRUx3lH0rxG/sZcx3bXxcGXqMbnycHDVZaYGdvQb8V4XTCTnWEbb6Kis=",
+                      "txid": "44772cdbd92961b9c98ec4b3954796c51081fb299ed9156a5f7d387504af9109",
+                      "chain": "main",
+                      "snapshot": "trx"
+                    },
+                    {
+                      "address": "t1J7WrTnM4tWr5mSjxVNECxKrMmQzggNqJy",
+                      "satoshis": 1888954204820,
+                      "amount": 18889.5420482,
+                      "claimableAmount": 1251.61560346,
+                      "claimedAddress": "8kmnZyrakbRJcy8WuwStiNKeHpDNDdDiN7KPAAeK3c4r",
+                      "fee": 3,
+                      "message": "16404927637624pe3ro2t0unk7iv3yywok9hfuiph0gwzm1y8woj1ol8l",
+                      "signature": "IJ3r2cshRRr2QS0uL1CntCdfeHX0U5yLFsSpsnkDFmSufE0dZxUuTJykcqlO2kJGX9E1ig88Agdfvws8xp2jDoE=",
+                      "txid": "5B6nmuRMVUtLv1eDTU5BpWwRGdW7uskujCkdRR6Qo88dB3rryFmJicdmYAWBv53KuwozzskqBoMkgsGgssNo1Yvh",
+                      "chain": "main",
+                      "snapshot": "sol"
+                    },
+                    {
+                      "address": "e9fe1ef98e46283a153d4af1f5d68bcfa94b882579a053c3f0dd9272c05aa4d8",
+                      "satoshis": 50000176321,
+                      "amount": 500.00176321,
+                      "claimableAmount": 41.02936994,
+                      "chain": "kda",
+                      "snapshot": "eth"
+                    },
+                    {
+                      "address": "e9fe1ef98e46283a153d4af1f5d68bcfa94b882579a053c3f0dd9272c05aa4d8",
+                      "satoshis": 50000176321,
+                      "amount": 500.00176321,
+                      "claimableAmount": 41.02936994,
+                      "claimedAddress": "0x53955d4a5fc54cfce08b04db6719544798e175b9",
+                      "fee": 7,
+                      "message": "16266016563231vo1q6tkggpl85sf11tzgce20h8xh2ogua2rdea3i5vd",
+                      "signature": "UBqz+fZCFK4xeYCRHW+JHftK1XqLm4VAeOXOUcHDbMfr+10322lLEjoXdOSPi7GGDjFa1Rd0j0ZRRjoJpPWACQ==",
+                      "txid": "0xc3f425da3fed99d1969103d5cc1e350f49dfe30d034417de59f1566177d7f2fd",
+                      "chain": "kda",
+                      "snapshot": "bsc"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/snapshots/claim": {
+      "post": {
+        "tags": [
+          "Snapshot"
+        ],
+        "summary": "Claim snapshot rewards",
+        "description": "Claim snapshot rewards for a given address on a given chain",
+        "operationId": "snapshotsclaim",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chain": {
+                    "type": "string",
+                    "description": "Chain that got snapshotted."
+                  },
+                  "snapshot": {
+                    "type": "string",
+                    "description": "Chain on which to claim snapshot rewards."
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Address on a snapshotted chain for which to claim snapshotted rewards"
+                  },
+                  "claimingAddress": {
+                    "type": "string",
+                    "description": "Address (account) on the claiming snapshot chain to which rewards will be sent."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Obtained message phrase that address was signing"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "description": "Signature of message signed by address."
+                  }
+                }
+              },
+              "example": {
+                "address": "t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU",
+                "chain": "main",
+                "snapshot": "bsc",
+                "claimingAddress": "0x316594e7f55865e27a3abc69cddf0b404b34f3b2",
+                "message": "16241430643672o36nc8hzhqe5b09f92znfto7tz17tqcn8nzw5v5ads6",
+                "signature": "IEsXaAFCGQ7lVbuRqPyD8AJAotqOhXCeYORfBUfJ3nI7LOGVv3QgX1jXoNpwu6LYgsW68FNRivENPm+DN0aWS6Y="
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "$ref": "#/components/schemas/status"
+                    },
+                    "data": {
+                      "type": "string",
+                      "description": "Transaction ID of snapshot claim"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": "0x55cb17a877a7c85bdbe3b97fa3d2abec088ed297d680af6410eedb7f6b899650"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/coinbase/stats": {
       "get": {
         "tags": [
@@ -990,7 +1535,7 @@
                 "properties": {
                   "chain": {
                     "type": "string",
-                    "description": "Chain on which to claim rewards. Available options are eth, kda, bsc"
+                    "description": "Chain on which to claim rewards. Available options are eth, kda, bsc, trx, sol"
                   },
                   "address": {
                     "type": "string",
@@ -1006,7 +1551,7 @@
                   },
                   "signature": {
                     "type": "string",
-                    "description": "Signature of message signed my address."
+                    "description": "Signature of message signed by address."
                   }
                 }
               },
