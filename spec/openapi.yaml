@@ -601,6 +601,62 @@ paths:
                     txid: "0xc3f425da3fed99d1969103d5cc1e350f49dfe30d034417de59f1566177d7f2fd"
                     chain: kda
                     snapshot: bsc
+  /snapshots/claim:
+    post:
+      tags:
+        - Snapshot
+      summary: Claim snapshot rewards
+      description: Claim snapshot rewards for a given address on a given chain
+      operationId: snapshotsclaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chain:
+                  type: string
+                  description: Chain that got snapshotted.
+                snapshot:
+                  type: string
+                  description: Chain on which to claim snapshot rewards.
+                address:
+                  type: string
+                  description: Address on a snapshotted chain for which to claim snapshotted rewards
+                claimingAddress:
+                  type: string
+                  description: Address (account) on the claiming snapshot chain to which rewards will be sent.
+                message:
+                  type: string
+                  description: Obtained message phrase that address was signing
+                signature:
+                  type: string
+                  description: Signature of message signed by address.
+            example:
+              address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+              chain: main
+              snapshot: bsc
+              claimingAddress: "0x316594e7f55865e27a3abc69cddf0b404b34f3b2"
+              message: 16241430643672o36nc8hzhqe5b09f92znfto7tz17tqcn8nzw5v5ads6
+              signature: IEsXaAFCGQ7lVbuRqPyD8AJAotqOhXCeYORfBUfJ3nI7LOGVv3QgX1jXoNpwu6LYgsW68FNRivENPm+DN0aWS6Y=
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/status"
+                  data:
+                    type: string
+                    description: Transaction ID of snapshot claim
+              example:
+                status: success
+                data: "0x55cb17a877a7c85bdbe3b97fa3d2abec088ed297d680af6410eedb7f6b899650"
+
   /coinbase/stats:
     get:
       tags:
@@ -1187,7 +1243,7 @@ paths:
               properties:
                 chain:
                   type: string
-                  description: Chain on which to claim rewards. Available options are eth, kda, bsc
+                  description: Chain on which to claim rewards. Available options are eth, kda, bsc, trx, sol
                 address:
                   type: string
                   description: Main chain address for which to claim rewards
@@ -1199,7 +1255,7 @@ paths:
                   description: Obtained message phrase that address was signing
                 signature:
                   type: string
-                  description: Signature of message signed my address.
+                  description: Signature of message signed by address.
             example:
               address: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
               chain: bsc
