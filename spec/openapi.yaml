@@ -225,6 +225,202 @@ paths:
               example:
                 status: success
                 data: 1630312899557vx5gmvwvc7d94fz12rhilfzvpgebicf6oatkf8c5paos
+  /snapshots/stats:
+    get:
+      tags:
+        - Snapshot
+      summary: Statistics about snapshot for reward and snapshot chains
+      description: >-
+        Gives statistics about snapshot given a reward chain and a snapshotted chain.
+        Only certain combination of chains are possible in order of which chains were launched.
+      operationId: snapshotsstats
+      parameters:
+        - in: query
+          name: rewardchain
+          required: true
+          schema:
+            type: string
+          description: Chain on which reward will be claimed
+          example: trx
+          $ref: "#/components/schemas/chain"
+        - in: query
+          name: snapshotchain
+          required: true
+          schema:
+            type: string
+          description: Chain that was snapshotted
+          example: bsc
+          $ref: "#/components/schemas/chain"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/status"
+                  data:
+                    type: object
+                    description: Coinbase general information statistics
+                    properties:
+                      total:
+                        type: number
+                        description: >-
+                          Total snapshot records present in database. This many addresses were snapshotted on a snapshot blockheight.
+                      totalClaimPossible:
+                        type: number
+                        description: >-
+                          Addresses that are eligible to claim a snapshot. Lower number than total snapshotted addresses is caused
+                          by associated Fusion fees for a snapshot claim such as blockchain network fees.
+                      totalClaimed:
+                        type: number
+                        description: >-
+                          Amount of adresses that already claimed snapshot on the reward chain.
+                      totalSatoshis:
+                        type: number
+                        description: >-
+                          Amount of satoshis (basic unit of Flux. 1 FLUX = 1e8 satoshis) that was totally snapshotted. At a given blockheight
+                          of snapshot, this many satoshis were in circulation on the snapshotted chain.
+                      totalFunds:
+                        type: number
+                        description: >-
+                          Amount of Flux that was totally snapshotted. At a given blockheight
+                          of snapshot, this many Flux was in circulation on the snapshotted chain.
+                      totalFundsClaimable:
+                        type: number
+                        description: >-
+                          Amount of Flux that is claimable on reward chain from this snapshot that will be totally distributed.
+                      totalFundsClaimed:
+                        type: number
+                        description: >-
+                          Amount of Flux that was already claimed on reward chain from this snapshot.
+                      totalFeesPaid:
+                        type: number
+                        description: >-
+                          Claiming snapshot is associated with fees to pay for gas on particular chain. totalFeesPaid is amount of Flux
+                          that user indirectly paid for claiming the snapshot by receiving little less. The fees go to Flux Foundation for Fusion operation.
+              example:
+                status: success
+                data:
+                  total: 5522
+                  totalClaimPossible: 1073
+                  totalClaimed: 517
+                  totalSatoshis: 728738706660070
+                  totalFunds: 7287387.0666007
+                  totalFundsClaimable: 482860.16345812
+                  totalFundsClaimed: 438994.7987284
+                  totalFeesPaid: 1972
+  /snapshots/info:
+    get:
+      tags:
+        - Snapshot
+      summary: Get information about particular snapshot record
+      description: >-
+        Snapshot record gives accurate information about specific snapshot record of both unclaimed or claimedAddress.
+        Must be searched by chains and one of: snapshotted address, claiming address or claimed transaction.
+      operationId: snapshotsinfo
+      parameters:
+        - in: query
+          name: rewardchain
+          required: true
+          schema:
+            type: string
+          description: Chain on which reward will be claimed
+          example: eth
+          $ref: "#/components/schemas/chain"
+        - in: query
+          name: snapshotchain
+          required: true
+          schema:
+            type: string
+          description: Chain that was snapshotted
+          example: main
+          $ref: "#/components/schemas/chain"
+        - in: query
+          name: address
+          required: false
+          schema:
+            type: string
+          description: Address that got snapshotted
+          example: t1TYxynkJE12avxWfd46haSrFEXZN8vMKjU
+        - in: query
+          name: claimedaddress
+          required: false
+          schema:
+            type: string
+          description: Address that claimed snapshot
+          example: "0x316594e7f55865e27a3abc69cddf0b404b34f3b2"
+        - in: query
+          name: txid
+          required: false
+          schema:
+            type: string
+          description: Transaction ID of claimed snapshot
+          example: "0x72d3a409ea54ea11b1ba4166bbad90ebf092a46d0d743b8c950f2d86694778f6"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/status"
+                  data:
+                    type: object
+                    description: Summary of snapshot record
+                    properties:
+                      address:
+                        type: string
+                        description: >-
+                          Snapshotted address belonging to record
+                      satoshis:
+                        type: number
+                        description: >-
+                          Total snapshotted amount in satoshis.
+                      amount:
+                        type: number
+                        description: >-
+                          Total snapshotted amount in full Flux units.
+                      claimableAmount:
+                        type: number
+                        description: >-
+                          Amount that is claimable on reward chain in full Flux units.
+                      claimedAddress:
+                        type: string
+                        description: >-
+                          Address on reward chain that claimed the snapshot. Can be missing if record is unclaimed.
+                      message:
+                        type: string
+                        description: >-
+                          Message used for verifying ownership of snapshotted address. Can be missing if record is unclaimed.
+                      signature:
+                        type: string
+                        description: >-
+                          Signature of a message signed by snapshotted address. Can be missing if record is unclaimed.
+                      txid:
+                        type: string
+                        description: >-
+                          Transaction ID of funds being sent from Fusion to claimed address. Can be missing if record is unclaimed.
+                      fee:
+                        type: number
+                        description: >-
+                          Fee that claiming of a snapshot is associated with. For this amount user received less Flux. Can be missing if record is unclaimed.
+              example:
+                status: success
+                data:
+                  address: t1Rp4xDWFCTGfxXKrayDU83tX7HV91nZ7By
+                  satoshis: 1000562500000
+                  amount: 10005.625
+                  claimableAmount: 662.96982428
+                  claimedAddress: HQDBXLyZHYRs34cfyYSqUjgg2i9KWwckaqcE8iakLLiu
+                  fee: 3
+                  message: 16406467156959e6nd05ek0jj42r1ugvbp0uli9zsp3j2pg2y4965v105
+                  signature: H/YLCh6MgoTpmOIQUWZOZwOpWhDLkZ1r0LrEIaAdCvVuYwj3B42hFcsl16Yu6zwociBEXhZuI8TemAEd15qrL8A=
+                  txid: 3nJVVJXGw3XHHgucEXUE71mriPJXLddBoPHfAGzaCdGJaFXTeFygzCuDBJt2voNPQjSYj82fEHGHBZWmAairCU1U
   /coinbase/stats:
     get:
       tags:
